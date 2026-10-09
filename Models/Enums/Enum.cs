@@ -36,3 +36,12 @@ public enum TransactionChannel
     MobileBanking = 3,
     ATM = 4
 }
+
+public enum CustomerCategory
+{
+    Staff = 1,
+    Individual = 2,
+    Corporate = 3,
+    VIP = 4,
+    VIPPlus = 5
+}

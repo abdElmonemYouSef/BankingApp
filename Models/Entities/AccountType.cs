@@ -3,10 +3,8 @@
 public class AccountType
 {
     public int AccountTypeID { get; set; }
-    public string TypeName { get; set; } = string.Empty;
-    public decimal InterestRate { get; set; }
-    public decimal MinimumBalance { get; set; }
-
-    // Navigation Property
-    public ICollection<Account> Accounts { get; set; } = new List<Account>();
+    public string Name { get; set; } = string.Empty;       // مثال: حساب توفير بالدولار
+    public string ProductCode { get; set; } = string.Empty;  // مثال: 101
+    public string Currency { get; set; } = "EGP";          // العملة الخاصة بالمنتج ده (EGP, USD, EUR)
 }
+

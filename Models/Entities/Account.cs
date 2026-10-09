@@ -12,12 +12,14 @@ public class Account
     public string Currency { get; set; } = "EGP";
     public AccountStatus Status { get; set; } = AccountStatus.Active;
 
+    // العلاقات الأساسية
     public int CustomerID { get; set; }
     public Customer Customer { get; set; } = null!;
 
     public int AccountTypeID { get; set; }
     public AccountType AccountType { get; set; } = null!;
 
+    // تعديل الفرع ليكون Foreign Key حقيقي
     public int BranchID { get; set; }
     public Branch Branch { get; set; } = null!;
 

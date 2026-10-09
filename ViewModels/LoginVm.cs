@@ -8,6 +8,9 @@ namespace BankingApp.ViewModels
         public string UserName { get; set; }
 
         [Required (ErrorMessage ="Bassword is a required ")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        public bool isPersistent = false;
     }
 }

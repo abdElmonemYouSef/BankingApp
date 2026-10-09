@@ -1,4 +1,5 @@
-﻿@{
+﻿@model LoginVm
+@{
     ViewData["Title"] = "Login";
     Layout = null; 
 }
@@ -32,16 +33,17 @@
                                     <h3 class="text-center font-weight-light my-4">Login</h3>
                                 </div>
                                 <div class="card-body">
-                                    <form>
+                                    <form method="post" action="/account/Login">
+                                        <div asp-validation-summary="All" role="alert" ></div>
                                         <div class="form-floating mb-3">
-                                            <input class="form-control" id="inputEmail" type="email"
+                                            <input asp-for="@Model.UserName" class="form-control" id="inputEmail" type="email"
                                                    placeholder="name@example.com" />
-                                            <label for="inputEmail">Email address</label>
+                                            <label asp-for="@Model.UserName" >Email address</label>
                                         </div>
                                         <div class="form-floating mb-3">
-                                            <input class="form-control" id="inputPassword" type="password"
+                                            <input asp-for="@Model.Password" class="form-control" id="inputPassword" type="password"
                                                    placeholder="Password" />
-                                            <label for="inputPassword">Password</label>
+                                            <label asp-for ="@Model.Password">Password</label>
                                         </div>
                                         <div class="form-check mb-3">
                                             <input class="form-check-input" id="inputRememberPassword" type="checkbox"
@@ -53,7 +55,8 @@
                                         </div>
                                         <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                             <a class="small" href="/Account/ForgetPassword">Forgot Password?</a>
-                                            <a class="btn btn-primary" href="index.html">Login</a>
+                                            @* <a class="btn btn-primary" href="">Login</a> *@
+                                            <input type="submit" name="name" class="btn btn-primary" value="Login" />
                                         </div>
                                     </form>
                                 </div>
