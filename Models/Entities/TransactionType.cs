@@ -8,3 +8,5 @@ public class TransactionType
     // Navigation Property
     public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 }
+
+

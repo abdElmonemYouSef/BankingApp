@@ -1,14 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-
-namespace BankingApp.Models.Entities;
-
-[PrimaryKey(nameof(BranchID), nameof(AccountTypeID))]
-public class AccountSequence
+﻿namespace BankingApp.Models
 {
-    public int BranchID { get; set; }
-
-    public int AccountTypeID { get; set; }
-
-    public int LastNumber { get; set; }
+    public class AccountSequence
+    {
+        public int Id { get; set; }
+        public string BranchCode { get; set; }    // 3 خانات
+        public string ProductCode { get; set; }   // 4 خانات
+        public long LastSerial { get; set; }      // آخر رقم سريال
+    }
 }

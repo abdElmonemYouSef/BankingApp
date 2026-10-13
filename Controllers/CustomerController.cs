@@ -1,7 +1,6 @@
 ﻿using BankingApp.Data;
 using BankingApp.Models.Entities;
 using BankingApp.Repositories.Interfaces;
-using BankingApp.ViewModels.Customer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingApp.Controllers

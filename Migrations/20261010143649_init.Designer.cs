@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankingApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20261008143012_m3")]
-    partial class m3
+    [Migration("20261010143649_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,13 +82,15 @@ namespace BankingApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountTypeID"));
 
-                    b.Property<decimal>("InterestRate")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("MinimumBalance")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TypeName")
+                    b.Property<string>("ProductCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -169,6 +171,9 @@ namespace BankingApp.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
+                    b.Property<int>("BranchId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Category")
                         .HasColumnType("int");
 
@@ -200,6 +205,8 @@ namespace BankingApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
 
                     b.ToTable("Customers");
                 });
@@ -588,7 +595,7 @@ namespace BankingApp.Migrations
             modelBuilder.Entity("BankingApp.Models.Entities.Account", b =>
                 {
                     b.HasOne("BankingApp.Models.Entities.AccountType", "AccountType")
-                        .WithMany("Accounts")
+                        .WithMany()
                         .HasForeignKey("AccountTypeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -621,6 +628,17 @@ namespace BankingApp.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("BankingApp.Models.Entities.Customer", b =>
+                {
+                    b.HasOne("BankingApp.Models.Entities.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
                 });
 
             modelBuilder.Entity("BankingApp.Models.Entities.Employee", b =>
@@ -751,11 +769,6 @@ namespace BankingApp.Migrations
                     b.Navigation("CreditedTransactions");
 
                     b.Navigation("DebitedTransactions");
-                });
-
-            modelBuilder.Entity("BankingApp.Models.Entities.AccountType", b =>
-                {
-                    b.Navigation("Accounts");
                 });
 
             modelBuilder.Entity("BankingApp.Models.Entities.Branch", b =>

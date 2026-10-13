@@ -8,7 +8,7 @@ namespace BankingApp.Controllers
     {
         public IActionResult Index()
         {
-            TempData["Success"] = "تم إضافة المنتج بنجاح يا باشا! 🚀";
+            TempData["Success"] = " dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd";
 
             return View();
         }

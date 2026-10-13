@@ -37,7 +37,7 @@ namespace BankingApp.Controllers
 
             var user = await _userManager.FindByNameAsync(model.UserName);
 
-            if (user is null) return NotFound();
+            //if (user is null) return NotFound();
 
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.isPersistent, false);
 
@@ -49,14 +49,11 @@ namespace BankingApp.Controllers
 
             return RedirectToAction("Index" , "Home");
 
+        }
             
 
-                
 
 
-
-
-        }
 
         [HttpGet]
         public IActionResult Register()

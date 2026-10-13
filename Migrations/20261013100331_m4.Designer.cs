@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankingApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20261008115909_m1")]
-    partial class m1
+    [Migration("20261013100331_m4")]
+    partial class m4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,30 @@ namespace BankingApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("BankingApp.Models.AccountSequence", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BranchCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("LastSerial")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ProductCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("accountSequence");
+                });
 
             modelBuilder.Entity("BankingApp.Models.Entities.Account", b =>
                 {
@@ -82,13 +106,15 @@ namespace BankingApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountTypeID"));
 
-                    b.Property<decimal>("InterestRate")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("MinimumBalance")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TypeName")
+                    b.Property<string>("ProductCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -158,32 +184,40 @@ namespace BankingApp.Migrations
 
             modelBuilder.Entity("BankingApp.Models.Entities.Customer", b =>
                 {
-                    b.Property<int>("CustomerID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ApplicationUserId")
+                    b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
-                    b.Property<string>("CIF")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("NationalID")
+                    b.Property<bool>("HasOnlineBanking")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NationalId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -191,12 +225,7 @@ namespace BankingApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("CustomerID");
-
-                    b.HasIndex("ApplicationUserId");
+                    b.HasKey("Id");
 
                     b.ToTable("Customers");
                 });
@@ -585,7 +614,7 @@ namespace BankingApp.Migrations
             modelBuilder.Entity("BankingApp.Models.Entities.Account", b =>
                 {
                     b.HasOne("BankingApp.Models.Entities.AccountType", "AccountType")
-                        .WithMany("Accounts")
+                        .WithMany()
                         .HasForeignKey("AccountTypeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -612,23 +641,12 @@ namespace BankingApp.Migrations
             modelBuilder.Entity("BankingApp.Models.Entities.Beneficiary", b =>
                 {
                     b.HasOne("BankingApp.Models.Entities.Customer", "Customer")
-                        .WithMany("Beneficiaries")
+                        .WithMany()
                         .HasForeignKey("CustomerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("BankingApp.Models.Entities.Customer", b =>
-                {
-                    b.HasOne("BankingApp.Models.Entities.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("BankingApp.Models.Entities.Employee", b =>
@@ -761,11 +779,6 @@ namespace BankingApp.Migrations
                     b.Navigation("DebitedTransactions");
                 });
 
-            modelBuilder.Entity("BankingApp.Models.Entities.AccountType", b =>
-                {
-                    b.Navigation("Accounts");
-                });
-
             modelBuilder.Entity("BankingApp.Models.Entities.Branch", b =>
                 {
                     b.Navigation("Accounts");
@@ -776,8 +789,6 @@ namespace BankingApp.Migrations
             modelBuilder.Entity("BankingApp.Models.Entities.Customer", b =>
                 {
                     b.Navigation("Accounts");
-
-                    b.Navigation("Beneficiaries");
                 });
 
             modelBuilder.Entity("BankingApp.Models.Entities.TransactionType", b =>

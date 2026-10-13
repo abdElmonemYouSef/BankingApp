@@ -8,9 +8,13 @@ namespace BankingApp.Models.Entities
         [Key]
         public int Id { get; set; }
 
+
+
         [Required(ErrorMessage = "National ID is required")]
         [RegularExpression(@"^[0-9]{14}$", ErrorMessage = "National ID must be exactly 14 digits")]
         public string NationalId { get; set; }
+
+
 
         [Required(ErrorMessage = "Full Name is required")]
         [MaxLength(100)]
@@ -39,9 +43,6 @@ namespace BankingApp.Models.Entities
 
         public virtual ICollection<Account> Accounts { get; set; } = new List<Account>();
 
-        [ForeignKey(nameof(Branch))]
-        public int BranchId { get; set; }
 
-        public Branch Branch { get; set; }
     }
 }

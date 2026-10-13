@@ -22,6 +22,30 @@ namespace BankingApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("BankingApp.Models.AccountSequence", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BranchCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("LastSerial")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ProductCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("accountSequence");
+                });
+
             modelBuilder.Entity("BankingApp.Models.Entities.Account", b =>
                 {
                     b.Property<int>("AccountID")
@@ -79,13 +103,15 @@ namespace BankingApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountTypeID"));
 
-                    b.Property<decimal>("InterestRate")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("MinimumBalance")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TypeName")
+                    b.Property<string>("ProductCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -585,7 +611,7 @@ namespace BankingApp.Migrations
             modelBuilder.Entity("BankingApp.Models.Entities.Account", b =>
                 {
                     b.HasOne("BankingApp.Models.Entities.AccountType", "AccountType")
-                        .WithMany("Accounts")
+                        .WithMany()
                         .HasForeignKey("AccountTypeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -748,11 +774,6 @@ namespace BankingApp.Migrations
                     b.Navigation("CreditedTransactions");
 
                     b.Navigation("DebitedTransactions");
-                });
-
-            modelBuilder.Entity("BankingApp.Models.Entities.AccountType", b =>
-                {
-                    b.Navigation("Accounts");
                 });
 
             modelBuilder.Entity("BankingApp.Models.Entities.Branch", b =>

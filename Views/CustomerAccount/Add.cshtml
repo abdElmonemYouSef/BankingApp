@@ -1,0 +1,129 @@
+﻿@model BankingApp.ViewModels.CreateAccountVM
+
+@{
+    ViewData["Title"] = "فتح حساب جديد";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="bi bi-wallet2 me-2"></i>فتح حساب بنكي جديد</h4>
+        </div>
+        <div class="card-body p-4">
+            <form asp-controller="CustomerAccount" asp-action="add" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row">
+                    <!-- رقم الفرع -->
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="BranchCode" class="form-label fw-bold"></label>
+                        <input asp-for="BranchCode" class="form-control" maxlength="3" placeholder="مثال: 001" />
+                        <span asp-validation-for="BranchCode" class="text-danger"></span>
+                    </div>
+
+                    <!-- كود المنتج -->
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="ProductCode" class="form-label fw-bold"></label>
+                        <input asp-for="ProductCode" id="productCodeInput" class="form-control" maxlength="4" placeholder="مثال: 1001" />
+                        <span asp-validation-for="ProductCode" class="text-danger"></span>
+                    </div>
+
+                    <!-- وصف المنتج (Readonly Input متصل بالـ ViewModel) -->
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="ProductDescription" class="form-label fw-bold"></label>
+                        <input asp-for="ProductDescription" id="productDescInput" class="form-control bg-light fw-bold text-primary" readonly placeholder="سيظهر وصف المنتج تلقائياً" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- كود العميل -->
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="CustomerId" class="form-label fw-bold"></label>
+                        <input asp-for="CustomerId" id="customerIdInput" type="number" class="form-control" placeholder="أدخل رقم العميل" />
+                        <span asp-validation-for="CustomerId" class="text-danger"></span>
+                    </div>
+
+                    <!-- اسم العميل (Readonly Input متصل بالـ ViewModel) -->
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="CustomerName" class="form-label fw-bold"></label>
+                        <input asp-for="CustomerName" id="customerNameInput" class="form-control bg-light fw-bold text-success" readonly placeholder="سيظهر اسم العميل تلقائياً" />
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a asp-action="Index" class="btn btn-outline-secondary">إلغاء</a>
+                    <button type="submit" class="btn btn-success px-4">
+                        <i class="bi bi-check-circle me-1"></i>حفظ وإنشاء الحساب
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+
+            // 1. جلب اسم العميل أوتوماتيك عند كتابة الـ CustomerId
+            $('#customerIdInput').on('change keyup', function () {
+                var customerId = $(this).val();
+                var $nameInput = $('#customerNameInput');
+
+                if (customerId && customerId > 0) {
+                    $nameInput.val('جاري البحث...').removeClass('text-danger text-success').addClass('text-muted');
+
+                    $.ajax({
+                        url: '/CustomerAccount/GetCustomerName', // تأكد أن اسم الـ Controller صحيح
+                        type: 'GET',
+                        data: { customerId: customerId },
+                        success: function (response) {
+                            if (response.success) {
+                                $nameInput.removeClass('text-muted text-danger').addClass('text-success').val(response.name);
+                            } else {
+                                $nameInput.removeClass('text-muted text-success').addClass('text-danger').val(response.message);
+                            }
+                        },
+                        error: function () {
+                            $nameInput.removeClass('text-muted text-success').addClass('text-danger').val('خطأ في الاتصال بالسيرفر');
+                        }
+                    });
+                } else {
+                    $nameInput.val('');
+                }
+            });
+
+            // 2. جلب وصف المنتج أوتوماتيك عند كتابة الـ ProductCode
+            $('#productCodeInput').on('change keyup', function () {
+                var productCode = $(this).val();
+                var $descInput = $('#productDescInput');
+
+                if (productCode && productCode.trim() !== '') {
+                    $descInput.val('جاري التحقق...').removeClass('text-danger text-primary').addClass('text-muted');
+
+                    $.ajax({
+                        url: '/CustomerAccount/GetProductDescription', // تأكد أن اسم الـ Controller صحيح
+                        type: 'GET',
+                        data: { productCode: productCode },
+                        success: function (response) {
+                            if (response.success) {
+                                $descInput.removeClass('text-muted text-danger').addClass('text-primary').val(response.description);
+                            } else {
+                                $descInput.removeClass('text-muted text-primary').addClass('text-danger').val(response.message);
+                            }
+                        },
+                        error: function () {
+                            $descInput.removeClass('text-muted text-primary').addClass('text-danger').val('خطأ في الاتصال بالسيرفر');
+                        }
+                    });
+                } else {
+                    $descInput.val('');
+                }
+            });
+
+        });
+    </script>}

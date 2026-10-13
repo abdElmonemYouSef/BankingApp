@@ -1,4 +1,5 @@
-﻿using BankingApp.Models.Entities;
+﻿using BankingApp.Models;
+using BankingApp.Models.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
@@ -19,6 +20,7 @@ namespace BankingApp.Data
         }
 
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<AccountSequence> accountSequence { get; set; }
         public DbSet<AccountType> AccountTypes { get; set; }
         public DbSet<Beneficiary> Beneficiaries { get; set; }
         public DbSet<Branch> Branches { get; set; }

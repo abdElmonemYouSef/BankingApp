@@ -12,7 +12,6 @@ public class Transaction
     public string InitiatedBy { get; set; } = string.Empty;
     public TransactionStatus Status { get; set; } = TransactionStatus.Pending;
 
-
     public int TransactionTypeID { get; set; }
     public TransactionType TransactionType { get; set; } = null!;
 

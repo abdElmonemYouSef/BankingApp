@@ -1,7 +1,8 @@
 using BankingApp.Data;
 using BankingApp.Models.Entities;
-using BankingApp.Repositories.Implementations;
+using BankingApp.Repositories;
 using BankingApp.Repositories.Interfaces;
+using BankingApp.Services;
 using BankingApp.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -36,7 +37,8 @@ namespace BankingApp
 
 
             builder.Services.AddTransient<IEmailSender, EmailSender>();
-            builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped<IAccountService, AccountService>();
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             var app = builder.Build();
 
@@ -56,7 +58,7 @@ namespace BankingApp
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=customer}/{action=add}/{id?}")
+                pattern: "{controller=Account}/{action=Login}/{id?}")
                 .WithStaticAssets();
 
             app.Run();

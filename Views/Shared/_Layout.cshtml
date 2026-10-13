@@ -1,31 +1,35 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="~/css/styles.css" rel="stylesheet" />
+    <title>@ViewData["Title"] - BankingApp</title>
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/styles.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BankingApp.styles.css" asp-append-version="true" />
-    <!-- Toastr CSS -->
+    
+    <!-- Toastr & DataTables CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" type="text/css" />
+    
+    <!-- FontAwesome -->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-
-    
-    
-    
 </head>
-<body>
+<body class="sb-nav-fixed">
 
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-4" href="index.html">BankingApp</a>
+        <a class="navbar-brand ps-4" href="/Home/Index">BankingApp</a>
         <!-- Sidebar Toggle-->
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" type="button"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
             <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." />
                 <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
             </div>
         </form>
@@ -43,76 +47,141 @@
         </ul>
     </nav>
 
-
-
-
-
-    @* <div class="container">
-        <main role="main" class="pb-3">
-            <partial name="_Notification" />
-        </main>
-            
-    </div> *@
-
-
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Core</div>
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link" href="/Home/Index">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard
+                            Add New User
                         </a>
-                        <div class="sb-sidenav-menu-heading">Interface</div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            Layouts
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                                <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
-                            </nav>
-                        </div> 
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                            
+
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePagesBranchEmployee" aria-expanded="false" aria-controls="collapsePagesBranchEmployee">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                            Pages
+                            Branch Employees
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
-                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                <a class="nav-link collapsed"  data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                    Customer
+
+                        <!-- Branch Employees Collapse -->
+                        <div class="collapse" id="collapsePagesBranchEmployee" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionBranch">
+                                <!-- Tellers -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePagesBranchTellers" aria-expanded="false" aria-controls="collapsePagesBranchTellers">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                    Bank Tellers
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
-                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                <div class="collapse" id="collapsePagesBranchTellers" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionBranch">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="/Customer/Add">Add</a>
-                                        <a class="nav-link" href="Customer/Update">Update Kyc</a>
+                                        <a class="nav-link" href="/Teller/Static"></a>
+                                        <a class="nav-link" href="/Teller/Light">Light Sidenav</a>
                                     </nav>
                                 </div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                    Error
+
+                                <!-- Customer Service -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePagesBranchCS" aria-expanded="false" aria-controls="collapsePagesBranchCS">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                    Bank CS
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
-                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                <div class="collapse" id="collapsePagesBranchCS" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionBranch">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="401.html">401 Page</a>
-                                        <a class="nav-link" href="404.html">404 Page</a>
-                                        <a class="nav-link" href="500.html">500 Page</a>
+                                        <a class="nav-link" href="/CS/CreateCD">Create CD</a>
+                                        <a class="nav-link" href="/CS/CreateTD">Create TD</a>
+                                        <a class="nav-link" href="/Customer/add">Create CIF</a>
+                                        <a class="nav-link" href="/customeraccount/add">Add Account</a>  
+                                        <a class="nav-link" href="/CS/AccountTransfer">Account Transfer</a>
+                                        <a class="nav-link" href="/CS/GlToGlTransfer">GL To GL Transfer</a>
+                                        <a class="nav-link" href="/CS/GlToAccountTransfer">GL To Account Transfer</a>
+                                        <a class="nav-link" href="/CS/AccountToGlTransfer">Account to GL Transfer</a>
                                     </nav>
                                 </div>
                             </nav>
                         </div>
+
+                        <!-- Admin Core (Pages) -->
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePagesAdmin" aria-expanded="false" aria-controls="collapsePagesAdmin">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            Admin Core Maintenance
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        
+                        <div class="collapse" id="collapsePagesAdmin" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                
+                                <!-- Customer Menu -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseCustomer" aria-expanded="false" aria-controls="pagesCollapseCustomer">
+                                    Customer
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseCustomer" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="/Customer/Add">Add</a>
+                                        <a class="nav-link" href="/Customer/Update">Update Kyc</a>
+                                    </nav>
+                                </div>
+
+                                <!-- Account Menu -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAccount" aria-expanded="false" aria-controls="pagesCollapseAccount">
+                                    Account
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseAccount" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="/BankAccount/Index">Summary</a>
+                                        <a class="nav-link" href="/BankAccount/Add">Add</a>
+                                        <a class="nav-link" href="/BankAccount/Update">Update Account</a>
+                                    </nav>
+                                </div>
+
+                                <!-- Branch Menu -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseBranch" aria-expanded="false" aria-controls="pagesCollapseBranch">
+                                    Branches
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseBranch" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="/Branch/Index">Summary</a>
+                                        <a class="nav-link" href="/Branch/Add">Add</a>
+                                        <a class="nav-link" href="/Branch/Update">Update Branch</a>
+                                    </nav>
+                                </div>
+
+                                <!-- Account Class Menu -->
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAccountClass" aria-expanded="false" aria-controls="pagesCollapseAccountClass">
+                                    Account Class
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseAccountClass" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="/AccountClass/Index">Summary</a>
+                                        <a class="nav-link" href="/AccountClass/Add">Add</a>
+                                        <a class="nav-link" href="/AccountClass/Update">Update Class</a>
+                                    </nav>
+                                </div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseUsers" aria-expanded="false" aria-controls="pagesCollapseAccountClass">
+                                    Users
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseUsers" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="/AccountClass/Index">Summary</a>
+                                        <a class="nav-link" href="/AccountClass/Add">Add</a>
+                                        <a class="nav-link" href="/AccountClass/Update">Update User</a>
+                                    </nav>
+                                </div>
+
+                            </nav>
+                        </div>
+
                         <div class="sb-sidenav-menu-heading">Addons</div>
-                        <a class="nav-link" href="charts.html">
+                        <a class="nav-link" href="/Charts/Index">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Charts
                         </a>
-                        <a class="nav-link" href="tables.html">
+                        <a class="nav-link" href="/Tables/Index">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Tables
                         </a>
@@ -129,44 +198,56 @@
                 <div class="container-fluid px-4">
                     <partial name="_Notification" />
                     @RenderBody()
-                    
                 </div>
             </main>
-
         </div>
     </div>
 
-
-
-
+    <!-- 1. JS Libraries الأساسية -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/assets/demo/chart-area-demo.js"></script>
-    <script src="~/assets/demo/chart-bar-demo.js"></script>
-    <script src="~/js/datatables-simple-demo.js"></script>
-    <script src="~/js/scripts.js"></script>
-    <script type="importmap"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    
+    <!-- 2. Simple DataTables JS (CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-    <script src="assets/demo/chart-area-demo.js"></script>
-    <script src="~/assets/demo/chart-bar-demo.js"></script>
-    <script src="~/assets/demo/chart-pie-demo.js"></script>
-    <script src="~/assets/demo/chart-pie-demo.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
-    <script>
-        toastr.options = {
-        "closeButton": true,    
-        "progressBar": true,
-        "positionClass": "toast-bottom-right", // المكان فوق يمين
-        "timeOut": "3000" // يختفي بعد 3 ثواني
-        };
-    </script>
 
+    <!-- 3. Script مخصص ومباشر بدون الاعتماد على أي ملف خارجي قد يكون ناقصاً -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+        // --- 1. تشغيل زرار الـ Toggle الخاص بالـ SideNav ---
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.body.classList.toggle('sb-sidenav-toggled');
+        localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+        });
+        }
+
+        // --- 2. تشغيل الـ DataTables تلقائياً لأي جدول بياخد id="datatablesSimple" أو كلاس .datatable ---
+        const datatablesSimple = document.getElementById('datatablesSimple');
+        if (datatablesSimple) {
+        new simpleDatatables.DataTable(datatablesSimple);
+        } else {
+        // تجريب تفعيل أي جدول بياخد class="datatable"
+        const allTables = document.querySelectorAll('.datatable');
+        allTables.forEach(table => new simpleDatatables.DataTable(table));
+        }
+            
+        });
+
+        // إعدادات Toastr
+        if (typeof toastr !== 'undefined') {
+        toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-bottom-right",
+        "timeOut": "3000"
+        };
+        }
+    </script>
 </body>
-</html >
+</html>

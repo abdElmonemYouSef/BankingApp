@@ -3,10 +3,10 @@
 using System.ComponentModel.DataAnnotations;
 using BankingApp.Models.Enums;
 
-namespace BankingApp.ViewModels.Customer
+namespace BankingApp.ViewModels
 
 {
-    public class CreateCustomerVM
+    public class UpdateKycVM
     {
         [Required(ErrorMessage = "National ID is required")]
         [RegularExpression(@"^[0-9]{14}$", ErrorMessage = "National ID must be exactly 14 digits")]
