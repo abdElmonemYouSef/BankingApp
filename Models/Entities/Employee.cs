@@ -15,11 +15,4 @@ public class Employee
     public ApplicationUser ApplicationUser { get; set; }
 
 
-
-
-
-    // Navigation Properties
-    public ICollection<Role> Roles { get; set; } = new List<Role>();
-
-    //public ICollection<StaffAuditLog> StaffAuditLogs { get; set; } = new List<StaffAuditLog>();
 }

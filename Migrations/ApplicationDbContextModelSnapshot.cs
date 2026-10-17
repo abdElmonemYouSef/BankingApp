@@ -74,10 +74,6 @@ namespace BankingApp.Migrations
                     b.Property<int>("CustomerID")
                         .HasColumnType("int");
 
-                    b.Property<string>("IBAN")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -267,36 +263,36 @@ namespace BankingApp.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("BankingApp.Models.Entities.EmployeeRole", b =>
+            modelBuilder.Entity("BankingApp.Models.Entities.GL", b =>
                 {
-                    b.Property<int>("EmployeeID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleID")
-                        .HasColumnType("int");
-
-                    b.HasKey("EmployeeID", "RoleID");
-
-                    b.HasIndex("RoleID");
-
-                    b.ToTable("EmployeeRoles");
-                });
-
-            modelBuilder.Entity("BankingApp.Models.Entities.Role", b =>
-                {
-                    b.Property<int>("RoleID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("RoleName")
+                    b.Property<bool>("AllowNegative")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("BranchID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("RoleID");
+                    b.Property<string>("GLNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Roles");
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchID");
+
+                    b.ToTable("Gls");
                 });
 
             modelBuilder.Entity("BankingApp.Models.Entities.Transaction", b =>
@@ -373,21 +369,6 @@ namespace BankingApp.Migrations
                     b.HasKey("TransactionTypeID");
 
                     b.ToTable("TransactionTypes");
-                });
-
-            modelBuilder.Entity("EmployeeRole", b =>
-                {
-                    b.Property<int>("EmployeesEmployeeID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RolesRoleID")
-                        .HasColumnType("int");
-
-                    b.HasKey("EmployeesEmployeeID", "RolesRoleID");
-
-                    b.HasIndex("RolesRoleID");
-
-                    b.ToTable("EmployeeRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -672,23 +653,15 @@ namespace BankingApp.Migrations
                     b.Navigation("Branch");
                 });
 
-            modelBuilder.Entity("BankingApp.Models.Entities.EmployeeRole", b =>
+            modelBuilder.Entity("BankingApp.Models.Entities.GL", b =>
                 {
-                    b.HasOne("BankingApp.Models.Entities.Employee", "Employee")
+                    b.HasOne("BankingApp.Models.Entities.Branch", "Branch")
                         .WithMany()
-                        .HasForeignKey("EmployeeID")
+                        .HasForeignKey("BranchID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BankingApp.Models.Entities.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("Role");
+                    b.Navigation("Branch");
                 });
 
             modelBuilder.Entity("BankingApp.Models.Entities.Transaction", b =>
@@ -708,21 +681,6 @@ namespace BankingApp.Migrations
                         .IsRequired();
 
                     b.Navigation("TransactionType");
-                });
-
-            modelBuilder.Entity("EmployeeRole", b =>
-                {
-                    b.HasOne("BankingApp.Models.Entities.Employee", null)
-                        .WithMany()
-                        .HasForeignKey("EmployeesEmployeeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BankingApp.Models.Entities.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RolesRoleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

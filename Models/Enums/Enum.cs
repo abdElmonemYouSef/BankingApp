@@ -45,3 +45,17 @@ public enum CustomerCategory
     VIP = 4,
     VIPPlus = 5
 }
+
+public enum Currency
+{
+    EGP,
+    USD,
+    SAR,
+    EUR,
+    GPB,
+    KWD,
+    BHD,
+    JOD,
+    AED,
+    OMR
+}

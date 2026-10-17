@@ -1,0 +1,78 @@
+﻿@model BankingApp.ViewModels.GLFormViewModel
+
+@{
+    ViewData["Title"] = "Add GL";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Add GL Account</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="Index">GL Summary</a></li>
+        <li class="breadcrumb-item active">Add GL</li>
+    </ol>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header fw-bold">
+            <i class="fas fa-plus-circle me-1"></i> Create New GL Account
+        </div>
+        <div class="card-body">
+            <form asp-action="Add" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="GLNumber" class="form-label fw-bold"></label>
+                        <input asp-for="GLNumber" class="form-control" placeholder="e.g. GL-1001" />
+                        <span asp-validation-for="GLNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Description" class="form-label fw-bold"></label>
+                        <input asp-for="Description" class="form-control" placeholder="Enter GL description" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Currency" class="form-label fw-bold"></label>
+                        <select asp-for="Currency" asp-items="Html.GetEnumSelectList<BankingApp.Models.Enums.Currency>()" class="form-select"></select>
+                        <span asp-validation-for="Currency" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="BranchID" class="form-label fw-bold"></label>
+                        <select asp-for="BranchID" asp-items="Model.Branches" class="form-select">
+                            <option value="">-- Select Branch --</option>
+                        </select>
+                        <span asp-validation-for="BranchID" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
+                        <div class="form-check form-switch mt-2">
+                            <input class="form-check-input" type="checkbox" asp-for="AllowNegative" id="allowNegativeSwitch">
+                            <label class="form-check-label fw-bold" for="allowNegativeSwitch">
+                                @Html.DisplayNameFor(m => m.AllowNegative)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-end">
+                    <a asp-action="Index" class="btn btn-secondary me-2">
+                        <i class="fas fa-arrow-left me-1"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Create GL
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

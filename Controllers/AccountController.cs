@@ -43,15 +43,13 @@ namespace BankingApp.Controllers
 
             if (!result.Succeeded)
             {
-                ModelState.AddModelError("" , "Invalid UserName or Invalid Password");
+                ModelState.AddModelError("", "Invalid UserName or Invalid Password");
                 return View(model);
             }
 
-            return RedirectToAction("Index" , "Home");
+            return RedirectToAction("Index", "Home");
 
         }
-            
-
 
 
 
