@@ -8,7 +8,6 @@ public class Account
     public string AccountNumber { get; set; } = string.Empty;
     public string IBAN { get; set; } = string.Empty;
     public decimal Balance { get; set; }
-    public decimal AvailableBalance { get; set; }
     public string Currency { get; set; } = "EGP";
     public AccountStatus Status { get; set; } = AccountStatus.Active;
 

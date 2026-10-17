@@ -9,10 +9,13 @@ public class Transaction
     public decimal Amount { get; set; }
     public string Currency { get; set; } = "EGP";
     public TransactionChannel Channel { get; set; }
-    public string InitiatedBy { get; set; } = string.Empty;
+    public string MakerId { get; set; } = string.Empty;
+    public string CheckerId { get; set; } = string.Empty;
+    public DateTime TimeStamps { get; set; }
     public TransactionStatus Status { get; set; } = TransactionStatus.Pending;
 
     public int TransactionTypeID { get; set; }
+    public string? Narrative{ get; set; }
     public TransactionType TransactionType { get; set; } = null!;
 
 }

@@ -17,7 +17,7 @@ namespace BankingApp.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.12")
+                .HasAnnotation("ProductVersion", "10.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -60,9 +60,6 @@ namespace BankingApp.Migrations
 
                     b.Property<int>("AccountTypeID")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("AvailableBalance")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18,2)");
@@ -322,16 +319,26 @@ namespace BankingApp.Migrations
                     b.Property<int>("Channel")
                         .HasColumnType("int");
 
+                    b.Property<string>("CheckerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Currency")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("InitiatedBy")
+                    b.Property<string>("MakerId")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Narrative")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("TimeStamps")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("TransactionRef")
                         .IsRequired()

@@ -22,6 +22,6 @@ namespace BankingApp.ViewModels
         [Display(Name = "Branch Code")]
         [Required(ErrorMessage = "Please enter the branch code.")]
         [StringLength(3, MinimumLength = 3, ErrorMessage = "Branch code must be exactly 3 characters.")]
-        public string BranchCode { get; set; }
+        public int BranchCode { get; set; }
     }
 }

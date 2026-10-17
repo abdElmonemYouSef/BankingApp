@@ -1,0 +1,91 @@
+﻿@model BankingApp.ViewModels.WithdrawalViewModel
+
+@{
+    ViewData["Title"] = "Cash Withdraw";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Cash Withdraw Transaction</h4>
+        </div>
+        <div class="card-body">
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <form asp-action="Withdraw" method="post" id="WithdrawForm">
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="AccountNumber" class="form-label"></label>
+                    <input asp-for="AccountNumber" id="accountNumberInput" class="form-control" autocomplete="off" placeholder="Enter account number..." />
+                    <span asp-validation-for="AccountNumber" class="text-danger"></span>
+                </div>
+
+                <!-- حقل اسم صاحب الحساب الذي يظهر تلقائياً عبر الـ AJAX -->
+                <div class="mb-3">
+                    <label class="form-label">Account Holder Name</label>
+                    <input type="text" id="accountHolderName" class="form-control" readonly style="background-color: #e9ecef;" placeholder="Will load automatically upon entering account number..." />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Amount" class="form-label"></label>
+                    <input asp-for="Amount" class="form-control" placeholder="0.00" />
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Optional notes..."></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success px-4">Complete Withdraw</button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+        $('#accountNumberInput').on('blur', function () {
+        var accountNumber = $(this).val();
+
+        if (accountNumber.trim() === '') {
+        $('#accountHolderName').val('');
+        return;
+        }
+
+        $.ajax({
+        url: '/Transaction/GetAccountHolderName',
+        type: 'GET',
+        data: { accountNumber: accountNumber },
+        success: function (response) {
+        if (response.success) {
+        $('#accountHolderName').val(response.customerName);
+        } else {
+        $('#accountHolderName').val('');
+        alert(response.message);
+        }
+        },
+        error: function () {
+        $('#accountHolderName').val('');
+        alert('An error occurred while fetching account details.');
+        }
+        });
+        });
+        });
+    </script>
+}

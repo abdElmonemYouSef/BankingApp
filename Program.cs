@@ -27,7 +27,7 @@ namespace BankingApp
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(option =>
             {
-                
+
             })
                         .AddEntityFrameworkStores<ApplicationDbContext>()
                         .AddDefaultTokenProviders();
@@ -38,6 +38,7 @@ namespace BankingApp
 
             builder.Services.AddTransient<IEmailSender, EmailSender>();
             builder.Services.AddScoped<IAccountService, AccountService>();
+            builder.Services.AddScoped<ITransactionService, TransactionService>();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             var app = builder.Build();

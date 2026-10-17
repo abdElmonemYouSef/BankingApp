@@ -1,15 +1,12 @@
 ﻿using BankingApp.Data;
-using BankingApp.Models;
+using global::BankingApp.Data;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace BankingApp.Services
 {
-    public interface IAccountService
-    {
-        Task<string> GenerateAccountNumberAsync(string branchCode, string productCode);
-    }
-
     public class AccountService : IAccountService
+
     {
         private readonly ApplicationDbContext _context;
 
@@ -18,49 +15,23 @@ namespace BankingApp.Services
             _context = context;
         }
 
-        public async Task<string> GenerateAccountNumberAsync(string branchCode, string productCode)
+        public async Task<string> GenerateAccountNumberAsync(int branchCode, string productCode)
         {
-            // 1. التحقق من الطول الصحيح
-            if (string.IsNullOrWhiteSpace(branchCode) || branchCode.Length != 3)
-                throw new ArgumentException("رقم الفرع يجب أن يكون 3 خانات.");
 
-            if (string.IsNullOrWhiteSpace(productCode) || productCode.Length != 4)
-                throw new ArgumentException("كود المنتج يجب أن يكون 4 خانات.");
 
-            // 2. البحث عن التسلسل الحالي للفرع والمنتج
-            var sequence = await _context.accountSequence
-                .FirstOrDefaultAsync(s => s.BranchCode == branchCode && s.ProductCode == productCode);
+            string yearComponent = DateTime.UtcNow.ToString("yy");
 
-            long nextSerial = 1;
+            int count = await _context.AccountTypes
+                .CountAsync(a => a.AccountTypeID == branchCode && a.ProductCode == productCode);
 
-            if (sequence == null)
-            {
-                // لو أول مرة، أنشئ سجل جديد يبدأ من 1
-                sequence = new AccountSequence
-                {
-                    BranchCode = branchCode,
-                    ProductCode = productCode,
-                    LastSerial = 1
-                };
-                _context.accountSequence.Add(sequence);
-            }
-            else
-            {
-                // لو موجود، زود السريال بواحدة
-                nextSerial = ++sequence.LastSerial;
-                _context.accountSequence.Update(sequence);
-            }
+            long nextSerial = count + 1;
 
-            // 3. تنسيق السريال ليكون 9 خانات (بإضافة أصفار على اليسار)
-            string formattedSerial = nextSerial.ToString("D9");
+            string serialFormatted = nextSerial.ToString("D6");
 
-            // 4. دمج الأجزاء الثلاثة (3 + 4 + 9 = 16 رقم)
-            string accountNumber = $"{branchCode}{productCode}{formattedSerial}";
+            string generatedAccountNumber = $"{branchCode}{productCode}{serialFormatted}";
 
-            // 5. حفظ التغييرات في الداتا بيز
-            await _context.SaveChangesAsync();
-
-            return accountNumber;
+            return generatedAccountNumber;
         }
+
     }
 }

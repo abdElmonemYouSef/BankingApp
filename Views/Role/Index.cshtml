@@ -1,0 +1,120 @@
+﻿@model BankingApp.ViewModels.RoleIndexViewModel
+
+@{
+    ViewData["Title"] = "Roles List";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-shield-lock"></i> Role Management</h2>
+        <div>
+            <a asp-action="Add" class="btn btn-primary me-2">
+                <i class="bi bi-plus-circle"></i> Create New Role
+            </a>
+            <a asp-action="ModifyAccess" class="btn btn-success">
+                <i class="bi bi-person-gear"></i> Assign Role to User
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Search / Filter Form -->
+    <form asp-action="Index" method="post" class="row g-3 mb-4">
+        <div class="col-md-5">
+            <div class="input-group">
+                <input type="text" asp-for="SearchTerm" class="form-control" placeholder="Search by role name..." />
+                <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Search</button>
+                @if (!string.IsNullOrEmpty(Model.SearchTerm))
+                {
+                    <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+                }
+            </div>
+        </div>
+    </form>
+
+    <!-- Table -->
+    <div class="card shadow-sm border-0 mb-3">
+        <div class="card-body p-0">
+            <table class="table table-hover table-striped mb-0 text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Role ID</th>
+                        <th>Role Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Roles != null && Model.Roles.Any())
+                    {
+                        @foreach (var role in Model.Roles)
+                        {
+                            <tr>
+                                <td><code>@role.Id</code></td>
+                                <td class="fw-bold">@role.RoleName</td>
+                                <td>
+                                    <a asp-action="Update" asp-route-id="@role.Id" class="btn btn-sm btn-outline-warning me-1">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-muted py-4">No roles found matching your criteria.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                    <a class="page-link"
+                           asp-action="Index"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-pageIndex="@(Model.PageIndex - 1)"
+                           asp-route-pageSize="@Model.PageSize">
+                        Previous
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                        <a class="page-link"
+                               asp-action="Index"
+                               asp-route-searchTerm="@Model.SearchTerm"
+                               asp-route-pageIndex="@i"
+                               asp-route-pageSize="@Model.PageSize">
+                            @i
+                        </a>
+                    </li>
+                }
+
+                <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                    <a class="page-link"
+                           asp-action="Index"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-pageIndex="@(Model.PageIndex + 1)"
+                           asp-route-pageSize="@Model.PageSize">
+                        Next
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    }
+</div>

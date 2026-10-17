@@ -1,0 +1,119 @@
+﻿@model BankingApp.ViewModels.BranchIndexViewModel
+
+@{
+    ViewData["Title"] = "Branches List";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-building"></i> Branch Management</h2>
+        <a asp-action="Add" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Create New Branch
+        </a>
+    </div>
+
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Search / Filter Form -->
+    <form asp-action="Index" method="post" class="row g-3 mb-4">
+        <div class="col-md-5">
+            <div class="input-group">
+                <input type="text" asp-for="SearchTerm" class="form-control" placeholder="Search by name or code..." />
+                <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Search</button>
+                @if (!string.IsNullOrEmpty(Model.SearchTerm))
+                {
+                    <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+                }
+            </div>
+        </div>
+    </form>
+
+    <!-- Table -->
+    <div class="card shadow-sm border-0 mb-3">
+        <div class="card-body p-0">
+            <table class="table table-hover table-striped mb-0 text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Branch Name</th>
+                        <th>Branch Code</th>
+                        <th>Address</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Branches != null && Model.Branches.Any())
+                    {
+                        @foreach (var branch in Model.Branches)
+                        {
+                            <tr>
+                                <td>@branch.Id</td>
+                                <td class="fw-bold">@branch.BranchName</td>
+                                <td><code>@branch.BranchCode</code></td>
+                                <td>@branch.Address</td>
+                                <td>
+                                    <a asp-action="Update" asp-route-id="@branch.Id" class="btn btn-sm btn-outline-warning">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-muted py-4">No branches found matching your criteria.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                    <a class="page-link"
+                           asp-action="Index"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-pageIndex="@(Model.PageIndex - 1)"
+                           asp-route-pageSize="@Model.PageSize">
+                        Previous
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                        <a class="page-link"
+                               asp-action="Index"
+                               asp-route-searchTerm="@Model.SearchTerm"
+                               asp-route-pageIndex="@i"
+                               asp-route-pageSize="@Model.PageSize">
+                            @i
+                        </a>
+                    </li>
+                }
+
+                <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                    <a class="page-link"
+                           asp-action="Index"
+                           asp-route-searchTerm="@Model.SearchTerm"
+                           asp-route-pageIndex="@(Model.PageIndex + 1)"
+                           asp-route-pageSize="@Model.PageSize">
+                        Next
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    }
+</div>
