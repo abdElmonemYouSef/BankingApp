@@ -31,11 +31,10 @@ namespace BankingApp.ViewModels
         [Display(Name = "Active")]
         public bool IsActive { get; set; } = true;
 
-        [Required(ErrorMessage = "Password is required.")]
         [DataType(DataType.Password)]
         [StringLength(100, MinimumLength = 6, ErrorMessage = "The password must be at least 6 characters long.")]
         [Display(Name = "Password")]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         [Display(Name = "Selected Roles")]
         public List<string> SelectedRoles { get; set; } = new List<string>();

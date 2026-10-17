@@ -195,7 +195,6 @@ namespace BankingApp.Controllers
             return RedirectToAction(nameof(Index));
         }
         #region Manage User Roles (Add / Remove Roles)
-        // GET: /Users/AddOneOrMoreRoles/{userId}
         [HttpGet]
         public async Task<IActionResult> AddOneOrMoreRoles(string userId)
         {
@@ -245,8 +244,7 @@ namespace BankingApp.Controllers
         #endregion
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(string id)
+        [ValidateAntiForgeryToken]  public async Task<IActionResult> Delete(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
