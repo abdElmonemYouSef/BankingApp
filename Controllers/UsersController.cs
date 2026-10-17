@@ -195,6 +195,7 @@ namespace BankingApp.Controllers
             return RedirectToAction(nameof(Index));
         }
         #region Manage User Roles (Add / Remove Roles)
+        // GET: /Users/AddOneOrMoreRoles/{userId}
         [HttpGet]
         public async Task<IActionResult> AddOneOrMoreRoles(string userId)
         {

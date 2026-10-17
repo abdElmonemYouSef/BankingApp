@@ -222,21 +222,17 @@
         </div>
     </div>
 
-    <!-- 1. JS Libraries الأساسية -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     
-    <!-- 2. Simple DataTables JS (CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 
-    <!-- 3. Script مخصص ومباشر بدون الاعتماد على أي ملف خارجي قد يكون ناقصاً -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             
-        // --- 1. تشغيل زرار الـ Toggle الخاص بالـ SideNav ---
         const sidebarToggle = document.getElementById('sidebarToggle');
         if (sidebarToggle) {
         sidebarToggle.addEventListener('click', function(e) {
